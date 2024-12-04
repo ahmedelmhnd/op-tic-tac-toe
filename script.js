@@ -14,7 +14,8 @@ const show = function ()
     {
         for (let j = 0; j < gameArray[i].length; j++) 
         {
-            console.log(gameArray[i][j] + " ");
+            const cell = document.getElementById(`${i}${j}`);
+            cell.textContent = gameArray[i][j];
         }
         console.log("");
     }
@@ -22,7 +23,7 @@ const show = function ()
     
 const check = function () 
 {
-    let winner;
+    let winner = null;
     
     // Check rows
     for (let i = 0; i < 3; i++) {
@@ -53,21 +54,54 @@ const check = function ()
     return {show, move, check};
 })();
 
-function createPlayer() 
+function createPlayer(name, id) 
 {
-    
+
+
+    return {name, id}
 }
+
+const player1 = createPlayer("p1", "x")
+const player2 = createPlayer("p2", "o")
+
 
 const game = (function (player1, player2, gameboard) 
 {
-    gameboard.move("x", 0, 0)
-    gameboard.move("x", 0, 1)
-    gameboard.move("x", 0, 2)
+    let turn = player1;
+
+   /* while (gameboard.check() === null) 
+    {
+        let row = prompt("rows:");
+        let col = prompt("cols:");
+        gameboard.move(turn.id, row, col);
+        gameboard.show();
+        
+        if (turn === player1) 
+        {
+            turn = player2;    
+        } else 
+        {
+            turn = player1;    
+        }
+    }*/
+
+    
 
     
     return {};
-})("", "", gameboard);
+})(player1, player2, gameboard);
 
-gameboard.show();
-console.log(gameboard.check());
+
+const cells = document.querySelectorAll(".cell")
+
+cells.forEach(cell => 
+{
+    const id = cell.id;
+    const parts = id.split("");
+    cell.addEventListener("click", (e) =>
+    {
+        gameboard.move("x", parts[0], parts[1])
+        gameboard.show();
+    });
+});
 

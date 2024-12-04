@@ -1,0 +1,17 @@
+.board
+{
+    justify-self: center;
+    display: grid;
+    grid-template: 50px 50px 50px / 50px 50px 50px;
+    gap: 2px;
+}
+
+.board > div 
+{
+    display: flex;
+    border: 2px solid;
+
+    align-items: center;
+    justify-content: center;
+
+}
