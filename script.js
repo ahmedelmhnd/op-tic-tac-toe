@@ -6,6 +6,26 @@ const gameboard = (function ()
     ["", "", ""]
 ];
 
+const full = function () 
+{
+    let isFull = true;
+    
+    for (let i = 0; i < gameArray.length; i++) 
+    {
+        for (let j = 0; j < gameArray[i].length; j++) 
+        {
+            if (gameArray[i][j] === "") 
+            {
+                isFull = false;    
+            }
+        }
+        
+    }
+    return isFull;
+}
+
+
+
 const move = (id, row, col) => gameArray[row][col] = id;
 
 const show = function () 
@@ -51,7 +71,7 @@ const check = function ()
     return winner;
 }
 
-    return {show, move, check};
+    return {show, move, check, full};
 })();
 
 function createPlayer(name, id) 
@@ -61,29 +81,55 @@ function createPlayer(name, id)
     return {name, id}
 }
 
-const player1 = createPlayer("p1", "x")
-const player2 = createPlayer("p2", "o")
+const player1 = createPlayer(prompt("player 1, choose a name: "), "x")
+const player2 = createPlayer(prompt("player 2, choose a name: "), "o")
 
 
 const game = (function (player1, player2, gameboard) 
 {
     let turn = player1;
+    const cells = document.querySelectorAll(".cell");
+    const status = document.querySelector(".status");
+    let over = false;
+    status.textContent = `${player1.name}s turn.`
 
-   /* while (gameboard.check() === null) 
+    cells.forEach(cell => 
     {
-        let row = prompt("rows:");
-        let col = prompt("cols:");
-        gameboard.move(turn.id, row, col);
-        gameboard.show();
-        
-        if (turn === player1) 
+        const id = cell.id;
+        const parts = id.split("");
+        cell.addEventListener("click", (e) =>
         {
-            turn = player2;    
-        } else 
-        {
-            turn = player1;    
-        }
-    }*/
+            if (!over) 
+            {
+                if (cell.textContent === "") 
+                    {
+                        gameboard.move(turn.id, parts[0], parts[1])
+                    }
+                    gameboard.show();
+                    
+                    if (gameboard.check() != null) 
+                    {
+                        status.textContent = `${gameboard.check()} Won!!!`;
+                        over = true;
+                    }else if (gameboard.full() === true) 
+                    {
+                        status.textContent = "DRAW!!!!"
+                        over = true;
+                    }else if (turn === player1) 
+                    {
+                        turn = player2;  
+                        status.textContent = `${player2.name}s turn.`  
+                    } else 
+                    {
+                        turn = player1;
+                        status.textContent = `${player1.name}s turn.`
+                    }
+            }
+        });
+    });
+
+    
+    
 
     
 
@@ -92,16 +138,7 @@ const game = (function (player1, player2, gameboard)
 })(player1, player2, gameboard);
 
 
-const cells = document.querySelectorAll(".cell")
 
-cells.forEach(cell => 
-{
-    const id = cell.id;
-    const parts = id.split("");
-    cell.addEventListener("click", (e) =>
-    {
-        gameboard.move("x", parts[0], parts[1])
-        gameboard.show();
-    });
-});
+
+
 
