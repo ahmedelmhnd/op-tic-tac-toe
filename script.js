@@ -102,9 +102,9 @@ const game = (function (player1, player2, gameboard)
             if (!over) 
             {
                 if (cell.textContent === "") 
-                    {
-                        gameboard.move(turn.id, parts[0], parts[1])
-                    }
+                {
+                    gameboard.move(turn.id, parts[0], parts[1])
+
                     gameboard.show();
                     
                     if (gameboard.check() != null) 
@@ -124,6 +124,8 @@ const game = (function (player1, player2, gameboard)
                         turn = player1;
                         status.textContent = `${player1.name}s turn.`
                     }
+                }
+                    
             }
         });
     });
